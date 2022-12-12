@@ -37,6 +37,29 @@ router.get("/search/:category", async (req, res) => {
   });
 });
 
+router.get("/search/brand/:brand", async (req, res) => {
+  const { brand } = req.params;
+
+  // search by category
+  const searchResult = await Article.find({ brand });
+
+  // no result found
+  if (!searchResult.length) {
+    res.json({
+      result: false,
+      searchResult,
+      msg: `no result found`
+    })
+    return;
+  }
+
+  // results found
+  res.json({
+    result: true,
+    searchResult,
+  });
+});
+
 router.post("/add", async (req, res) => {
   // destructuring
   const { category, brand, model, price, img } = req.body;
