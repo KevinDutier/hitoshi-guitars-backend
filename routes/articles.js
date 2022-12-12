@@ -20,6 +20,17 @@ router.get("/search/:category", async (req, res) => {
   // search by category
   const searchResult = await Article.find({ category });
 
+  // no result found
+  if (!searchResult.length) {
+    res.json({
+      result: false,
+      searchResult,
+      msg: `no result found`
+    })
+    return;
+  }
+
+  // results found
   res.json({
     result: true,
     searchResult,
