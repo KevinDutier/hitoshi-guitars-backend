@@ -14,7 +14,7 @@ router.get("/all", async (req, res) => {
   });
 });
 
-router.get("/search/:category", async (req, res) => {
+router.get("/search/c/:category", async (req, res) => {
   const { category } = req.params;
 
   // search by category
@@ -37,7 +37,7 @@ router.get("/search/:category", async (req, res) => {
   });
 });
 
-router.get("/search/brand/:brand", async (req, res) => {
+router.get("/search/b/:brand", async (req, res) => {
   const { brand } = req.params;
 
   // search by category
