@@ -14,27 +14,53 @@ router.get("/all", async (req, res) => {
   });
 });
 
-router.get("/search/c/:category", async (req, res) => {
-  const { category } = req.params;
+router.get("/search/c/:category/:parameter", async (req, res) => {
+  const { category, parameter } = req.params;
 
   // search by category
-  const searchResult = await Article.find({ category });
+  let searchResult = await Article.find({ category });
 
   // no result found
   if (!searchResult.length) {
     res.json({
       result: false,
       searchResult,
-      msg: `no result found`
-    })
+      msg: `no result found`,
+    });
     return;
   }
 
-  // results found
-  res.json({
-    result: true,
-    searchResult,
-  });
+  // result found, sorting
+  // by default (popularity)
+  if (parameter === "byPopularity") {
+    res.json({
+      result: true,
+      searchResult,
+    });
+    return;
+  }
+
+  // by brand
+  if (parameter === "byBrand") {
+    searchResult = searchResult.sort((a, b) => a.brand.localeCompare(b.brand));
+    res.json({
+      result: true,
+      searchResult,
+    });
+    return;
+  }
+
+  // by price
+  if (parameter === "byPrice") {
+    searchResult = searchResult.sort(
+      (a, b) => parseFloat(a.price) - parseFloat(b.price)
+    );
+    res.json({
+      result: true,
+      searchResult,
+    });
+    return;
+  }
 });
 
 router.get("/search/b/:brand", async (req, res) => {
@@ -48,8 +74,8 @@ router.get("/search/b/:brand", async (req, res) => {
     res.json({
       result: false,
       searchResult,
-      msg: `no result found`
-    })
+      msg: `no result found`,
+    });
     return;
   }
 
