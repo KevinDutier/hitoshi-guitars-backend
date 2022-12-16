@@ -31,8 +31,11 @@ router.get("/search/c/:category/:parameter", async (req, res) => {
   }
 
   // result found, sorting
-  // by default (popularity)
+  // by popularity (highest to lowest)
   if (parameter === "byPopularity") {
+    searchResult = searchResult.sort(
+      (a, b) => parseFloat(a.price) + parseFloat(b.price)
+    );
     res.json({
       result: true,
       searchResult,
@@ -40,7 +43,7 @@ router.get("/search/c/:category/:parameter", async (req, res) => {
     return;
   }
 
-  // by brand
+  // by brand (alphabetical)
   if (parameter === "byBrand") {
     searchResult = searchResult.sort((a, b) => a.brand.localeCompare(b.brand));
     res.json({
@@ -50,7 +53,7 @@ router.get("/search/c/:category/:parameter", async (req, res) => {
     return;
   }
 
-  // by price
+  // by price (lowest to highest)
   if (parameter === "byPrice") {
     searchResult = searchResult.sort(
       (a, b) => parseFloat(a.price) - parseFloat(b.price)
@@ -80,8 +83,11 @@ router.get("/search/b/:brand/:parameter", async (req, res) => {
   }
 
   // result found, sorting
-  // by default (popularity)
+  // by popularity (highest to lowest)
   if (parameter === "byPopularity") {
+    searchResult = searchResult.sort(
+      (a, b) => parseFloat(a.price) + parseFloat(b.price)
+    );
     res.json({
       result: true,
       searchResult,
@@ -89,7 +95,7 @@ router.get("/search/b/:brand/:parameter", async (req, res) => {
     return;
   }
 
-  // by brand
+  // by brand (alphabetical)
   if (parameter === "byBrand") {
     searchResult = searchResult.sort((a, b) => a.brand.localeCompare(b.brand));
     res.json({
@@ -99,7 +105,7 @@ router.get("/search/b/:brand/:parameter", async (req, res) => {
     return;
   }
 
-  // by price
+  // by price (lowest to highest)
   if (parameter === "byPrice") {
     searchResult = searchResult.sort(
       (a, b) => parseFloat(a.price) - parseFloat(b.price)

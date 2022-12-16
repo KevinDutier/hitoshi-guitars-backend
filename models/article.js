@@ -6,6 +6,7 @@ const articleSchema = mongoose.Schema({
     model: String,
     price: Number,
     img: String,
+    popularity: Number,
 });
  
 const Article = mongoose.model("articles", articleSchema);
