@@ -17,7 +17,7 @@ router.get("/all", async (req, res) => {
 router.get("/search/c/:category/:parameter", async (req, res) => {
   const { category, parameter } = req.params;
 
-  // SEARCH BY CATEGORY (folk, electric, bass)
+  // SEARCH BY CATEGORY (acoustic, electric, bass)
   let searchResult = await Article.find({ category });
 
   // no result found
