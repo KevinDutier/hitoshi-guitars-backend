@@ -34,7 +34,7 @@ router.get("/search/c/:category/:parameter", async (req, res) => {
   // by popularity (highest to lowest)
   if (parameter === "byPopularity") {
     searchResult = searchResult.sort(
-      (a, b) => parseFloat(a.price) + parseFloat(b.price)
+      (a, b) => parseFloat(a.popularity) + parseFloat(b.popularity)
     );
     res.json({
       result: true,
@@ -86,7 +86,7 @@ router.get("/search/b/:brand/:parameter", async (req, res) => {
   // by popularity (highest to lowest)
   if (parameter === "byPopularity") {
     searchResult = searchResult.sort(
-      (a, b) => parseFloat(a.price) + parseFloat(b.price)
+      (a, b) => parseFloat(a.popularity) + parseFloat(b.popularity)
     );
     res.json({
       result: true,
