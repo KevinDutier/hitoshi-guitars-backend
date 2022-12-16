@@ -5,7 +5,7 @@ const articleSchema = mongoose.Schema({
     brand: String,
     model: String,
     price: Number,
-    img: String,
+    img: Array,
     popularity: Number,
 });
  
