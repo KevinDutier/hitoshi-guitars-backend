@@ -70,7 +70,7 @@ router.get("/search/b/:brand/:parameter", async (req, res) => {
   const { brand, parameter } = req.params;
 
   // SEARCH BY BRAND (fender, ibanez...)
-  const searchResult = await Article.find({ brand });
+  let searchResult = await Article.find({ brand });
 
   // no result found
   if (!searchResult.length) {
