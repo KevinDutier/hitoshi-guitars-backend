@@ -6,19 +6,11 @@ router.get("/", (req, res) => {
   res.send("articles index");
 });
 
-router.get("/all", async (req, res) => {
-  const allArticles = await Article.find();
-
-  res.json({
-    allArticles,
-  });
-});
-
-router.get("/search/c/:category/:parameter", async (req, res) => {
-  const { category, parameter } = req.params;
+router.get("/search/:parameter/:sortBy", async (req, res) => {
+  const { parameter, sortBy } = req.params;
 
   // SEARCH BY CATEGORY (acoustic, electric, bass)
-  let searchResult = await Article.find({ category });
+  let searchResult = await Article.find({ category: parameter });
 
   // no result found
   if (!searchResult.length) {
@@ -32,7 +24,7 @@ router.get("/search/c/:category/:parameter", async (req, res) => {
 
   // result found, sorting
   // by popularity (highest to lowest)
-  if (parameter === "byPopularity") {
+  if (sortBy === "byPopularity") {
     searchResult = searchResult.sort(
       (a, b) => parseFloat(a.popularity) + parseFloat(b.popularity)
     );
@@ -44,7 +36,7 @@ router.get("/search/c/:category/:parameter", async (req, res) => {
   }
 
   // by brand (alphabetical)
-  if (parameter === "byBrand") {
+  if (sortBy === "byBrand") {
     searchResult = searchResult.sort((a, b) => a.brand.localeCompare(b.brand));
     res.json({
       result: true,
@@ -54,59 +46,7 @@ router.get("/search/c/:category/:parameter", async (req, res) => {
   }
 
   // by price (lowest to highest)
-  if (parameter === "byPrice") {
-    searchResult = searchResult.sort(
-      (a, b) => parseFloat(a.price) - parseFloat(b.price)
-    );
-    res.json({
-      result: true,
-      searchResult,
-    });
-    return;
-  }
-});
-
-router.get("/search/b/:brand/:parameter", async (req, res) => {
-  const { brand, parameter } = req.params;
-
-  // SEARCH BY BRAND (fender, ibanez...)
-  let searchResult = await Article.find({ brand });
-
-  // no result found
-  if (!searchResult.length) {
-    res.json({
-      result: false,
-      searchResult,
-      msg: `no result found`,
-    });
-    return;
-  }
-
-  // result found, sorting
-  // by popularity (highest to lowest)
-  if (parameter === "byPopularity") {
-    searchResult = searchResult.sort(
-      (a, b) => parseFloat(a.popularity) + parseFloat(b.popularity)
-    );
-    res.json({
-      result: true,
-      searchResult,
-    });
-    return;
-  }
-
-  // by brand (alphabetical)
-  if (parameter === "byBrand") {
-    searchResult = searchResult.sort((a, b) => a.brand.localeCompare(b.brand));
-    res.json({
-      result: true,
-      searchResult,
-    });
-    return;
-  }
-
-  // by price (lowest to highest)
-  if (parameter === "byPrice") {
+  if (sortBy === "byPrice") {
     searchResult = searchResult.sort(
       (a, b) => parseFloat(a.price) - parseFloat(b.price)
     );
