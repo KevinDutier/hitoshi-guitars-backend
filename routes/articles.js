@@ -6,11 +6,17 @@ router.get("/", (req, res) => {
   res.send("articles index");
 });
 
-router.get("/search/:parameter/:sortBy", async (req, res) => {
-  const { parameter, sortBy } = req.params;
+// search route
+// expects: parameter, type, and sortBy
+// ex: articles/search/category/acoustic/byPopularity
+// ex: articles/search/brand/fender/byPrice
+router.get("/search/:parameter/:type/:sortBy", async (req, res) => {
+  const { parameter, type, sortBy } = req.params;
+  let searchResult = undefined;
 
   // SEARCH BY CATEGORY (acoustic, electric, bass)
-  let searchResult = await Article.find({ category: parameter });
+  if (parameter === "category") searchResult = await Article.find({ category: type });
+  if (parameter === "brand") searchResult = await Article.find({ brand: type });
 
   // no result found
   if (!searchResult.length) {
