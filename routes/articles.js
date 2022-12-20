@@ -74,6 +74,16 @@ router.get("/search/:searchQuery/:sortBy", async (req, res) => {
     reference: { $regex: ".*" + searchQuery + ".*" },
   });
 
+    // no result found
+    if (!searchResult.length) {
+      res.json({
+        result: false,
+        searchResult,
+        msg: `no result found`,
+      });
+      return;
+    }
+
   // result found, sorting
   // by popularity (highest to lowest)
   if (sortBy === "byPopularity") {
