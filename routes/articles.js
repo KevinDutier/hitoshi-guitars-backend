@@ -6,7 +6,7 @@ router.get("/", (req, res) => {
   res.send("articles index");
 });
 
-// search route
+// search route (by category or brand)
 // expects: parameter, type, and sortBy
 // ex: articles/search/category/acoustic/byPopularity
 // ex: articles/search/brand/fender/byPrice
@@ -15,7 +15,8 @@ router.get("/search/:parameter/:type/:sortBy", async (req, res) => {
   let searchResult = undefined;
 
   // SEARCH BY CATEGORY (acoustic, electric, bass)
-  if (parameter === "category") searchResult = await Article.find({ category: type });
+  if (parameter === "category")
+    searchResult = await Article.find({ category: type });
   if (parameter === "brand") searchResult = await Article.find({ brand: type });
 
   // no result found
@@ -27,6 +28,51 @@ router.get("/search/:parameter/:type/:sortBy", async (req, res) => {
     });
     return;
   }
+
+  // result found, sorting
+  // by popularity (highest to lowest)
+  if (sortBy === "byPopularity") {
+    searchResult = searchResult.sort(
+      (a, b) => parseFloat(a.popularity) + parseFloat(b.popularity)
+    );
+    res.json({
+      result: true,
+      searchResult,
+    });
+    return;
+  }
+
+  // by brand (alphabetical)
+  if (sortBy === "byBrand") {
+    searchResult = searchResult.sort((a, b) => a.brand.localeCompare(b.brand));
+    res.json({
+      result: true,
+      searchResult,
+    });
+    return;
+  }
+
+  // by price (lowest to highest)
+  if (sortBy === "byPrice") {
+    searchResult = searchResult.sort(
+      (a, b) => parseFloat(a.price) - parseFloat(b.price)
+    );
+    res.json({
+      result: true,
+      searchResult,
+    });
+    return;
+  }
+});
+
+// search route (by user text input)
+router.get("/search/:searchQuery/:sortBy", async (req, res) => {
+  const { searchQuery, sortBy } = req.params;
+  // let searchResult = undefined;
+
+  let searchResult = await Article.find({
+    reference: { $regex: ".*" + searchQuery + ".*" },
+  });
 
   // result found, sorting
   // by popularity (highest to lowest)
