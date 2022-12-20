@@ -68,9 +68,9 @@ router.get("/search/:parameter/:type/:sortBy", async (req, res) => {
 // search route (by user text input)
 router.get("/search/:searchQuery/:sortBy", async (req, res) => {
   const { searchQuery, sortBy } = req.params;
-  // let searchResult = undefined;
 
   let searchResult = await Article.find({
+    // in the db, search for articles that contain searchQuery within their reference
     reference: { $regex: ".*" + searchQuery + ".*" },
   });
 
