@@ -66,6 +66,9 @@ router.get("/search/:parameter/:type/:sortBy", async (req, res) => {
 });
 
 // search route (by user text input)
+// expects: searchQuery and sortBy
+// ex: articles/search/jaguar/byPrice
+// ex: articles/search/acoustic/byPopularity
 router.get("/search/:searchQuery/:sortBy", async (req, res) => {
   const { searchQuery, sortBy } = req.params;
 
