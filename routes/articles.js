@@ -77,15 +77,15 @@ router.get("/search/:searchQuery/:sortBy", async (req, res) => {
     label: { $regex: ".*" + searchQuery + ".*" },
   });
 
-    // no result found
-    if (!searchResult.length) {
-      res.json({
-        result: false,
-        searchResult,
-        msg: `no result found`,
-      });
-      return;
-    }
+  // no result found
+  if (!searchResult.length) {
+    res.json({
+      result: false,
+      searchResult,
+      msg: `no result found`,
+    });
+    return;
+  }
 
   // result found, sorting
   // by popularity (highest to lowest)
@@ -121,6 +121,29 @@ router.get("/search/:searchQuery/:sortBy", async (req, res) => {
     });
     return;
   }
+});
+
+router.get("/:reference", async (req, res) => {
+  const { reference } = req.params;
+
+  // find article with matching reference in database
+  const searchResult = await Article.findOne({ reference });
+
+  // no result found
+  if (!searchResult.length) {
+    res.json({
+      result: false,
+      searchResult,
+      msg: `no result found`,
+    });
+    return;
+  }
+
+  // result found
+  res.json({
+    result: true,
+    searchResult,
+  });
 });
 
 router.post("/add", async (req, res) => {

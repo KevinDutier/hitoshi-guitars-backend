@@ -7,6 +7,7 @@ const articleSchema = mongoose.Schema({
     price: Number,
     img: Array,
     popularity: Number,
+    label: String,
     reference: String,
 });
  
