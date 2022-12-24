@@ -130,7 +130,7 @@ router.get("/:reference", async (req, res) => {
   const searchResult = await Article.findOne({ reference });
 
   // no result found
-  if (!searchResult.length) {
+  if (!searchResult) {
     res.json({
       result: false,
       searchResult,
