@@ -9,6 +9,7 @@ const articleSchema = mongoose.Schema({
     popularity: Number,
     label: String,
     reference: String,
+    description: String,
 });
  
 const Article = mongoose.model("articles", articleSchema);
