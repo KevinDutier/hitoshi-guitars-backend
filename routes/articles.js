@@ -6,66 +6,6 @@ router.get("/", (req, res) => {
   res.send("articles index");
 });
 
-// NOTE: deprecated, serach by text input is used instead
-// search route (by category or brand)
-// expects: parameter, type, and sortBy
-// ex: articles/search/category/acoustic/byPopularity
-// ex: articles/search/brand/fender/byPrice
-router.get("/search/:parameter/:type/:sortBy", async (req, res) => {
-  const { parameter, type, sortBy } = req.params;
-  let searchResult = undefined;
-
-  // SEARCH BY CATEGORY (acoustic, electric, bass)
-  if (parameter === "category")
-    searchResult = await Article.find({ category: type });
-  if (parameter === "brand") searchResult = await Article.find({ brand: type });
-
-  // no result found
-  if (!searchResult.length) {
-    res.json({
-      result: false,
-      searchResult,
-      msg: `no result found`,
-    });
-    return;
-  }
-
-  // result found, sorting
-  // by popularity (highest to lowest)
-  if (sortBy === "byPopularity") {
-    searchResult = searchResult.sort(
-      (a, b) => parseFloat(a.popularity) + parseFloat(b.popularity)
-    );
-    res.json({
-      result: true,
-      searchResult,
-    });
-    return;
-  }
-
-  // by brand (alphabetical)
-  if (sortBy === "byBrand") {
-    searchResult = searchResult.sort((a, b) => a.brand.localeCompare(b.brand));
-    res.json({
-      result: true,
-      searchResult,
-    });
-    return;
-  }
-
-  // by price (lowest to highest)
-  if (sortBy === "byPrice") {
-    searchResult = searchResult.sort(
-      (a, b) => parseFloat(a.price) - parseFloat(b.price)
-    );
-    res.json({
-      result: true,
-      searchResult,
-    });
-    return;
-  }
-});
-
 // search route (by user text input)
 // expects: searchQuery and sortBy
 // ex: articles/search/jaguar/byPrice
