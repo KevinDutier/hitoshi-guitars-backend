@@ -12,6 +12,7 @@ const cors = require("cors");
 // routers
 const indexRouter = require("./routes/index");
 const articlesRouter = require("./routes/articles");
+const brandsRouter = require("./routes/brands");
 
 const app = express();
 
@@ -29,5 +30,6 @@ app.listen(3000);
 // router prefixes
 app.use("/", indexRouter);
 app.use("/articles", articlesRouter);
+app.use("/brands", brandsRouter);
 
 module.exports = app;
