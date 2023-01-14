@@ -6,6 +6,7 @@ router.get("/", (req, res) => {
   res.send("articles index");
 });
 
+// NOTE: deprecated, serach by text input is used instead
 // search route (by category or brand)
 // expects: parameter, type, and sortBy
 // ex: articles/search/category/acoustic/byPopularity
