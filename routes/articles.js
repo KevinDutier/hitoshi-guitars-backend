@@ -74,7 +74,7 @@ router.get("/search/:searchQuery/:sortBy", async (req, res) => {
 
   let searchResult = await Article.find({
     // in the db, search for articles that contain searchQuery within their reference
-    label: { $regex: ".*" + searchQuery + ".*" },
+    label: { $regex: ".*" + searchQuery.toLowerCase() + ".*" },
   });
 
   // no result found
