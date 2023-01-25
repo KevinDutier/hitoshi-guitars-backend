@@ -6,8 +6,9 @@ router.get("/", (req, res) => {
   res.send("articles index");
 });
 
-// search route (by user text input)
+// SEARCH ROUTE (by user text input)
 // expects: searchQuery and sortBy
+// outputs: search result according to searchQuery (user text input) and sortBy
 // ex: articles/search/jaguar/byPrice
 // ex: articles/search/acoustic/byPopularity
 router.get("/search/:searchQuery/:sortBy", async (req, res) => {
@@ -63,7 +64,11 @@ router.get("/search/:searchQuery/:sortBy", async (req, res) => {
     return;
   }
 });
+// END OF SEARCH ROUTE
 
+// GET ARTICLE DATA
+// outputs article data by article reference
+// ex: articles/fender-jaguar
 router.get("/:reference", async (req, res) => {
   const { reference } = req.params;
 
@@ -86,7 +91,10 @@ router.get("/:reference", async (req, res) => {
     searchResult,
   });
 });
+// END OF GET ARTICLE DATA ROUTE
 
+// ADD NEW ARTICLE (POST)
+// expects: category, brand, mode, price, img
 router.post("/add", async (req, res) => {
   // destructuring
   const { category, brand, model, price, img } = req.body;
@@ -106,5 +114,6 @@ router.post("/add", async (req, res) => {
     })
   );
 });
+// END OF ADD NEW ARTICLE ROUTE
 
 module.exports = router;
